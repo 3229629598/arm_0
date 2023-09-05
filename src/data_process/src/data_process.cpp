@@ -15,7 +15,7 @@ namespace data_process_ns
         jtp_sub=this->create_subscription<trajectory_msgs::msg::JointTrajectoryPoint>("/jtp_data", 10, std::bind(&Data_Process::jtp_callback, this, std::placeholders::_1),sub_opt);
         
         joint_num=6;
-        arm_request.data=0xff;
+        arm_request_msg.data=0xff;
         joint_state.position.resize(joint_num);
         joint_state.velocity.resize(joint_num);
         joint_state.effort.resize(joint_num);
@@ -36,10 +36,10 @@ namespace data_process_ns
             for(int i=0;i<joint_num;i++)
                 joint_state.position[i]=rx_data.joint_position[i];
             joint_state_pub->publish(joint_state);
-            if(rx_data.arm_request!=arm_request.data)
+            if(rx_data.arm_request!=arm_request_msg.data)
             {
-                arm_request.data=rx_data.arm_request;
-                arm_request_pub->publish(arm_request);
+                arm_request_msg.data=rx_data.arm_request;
+                arm_request_pub->publish(arm_request_msg);
             }
         }
         else

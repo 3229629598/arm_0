@@ -29,7 +29,7 @@ namespace data_process_ns
         rclcpp::Publisher<std_msgs::msg::UInt8MultiArray>::SharedPtr tx_pub;
         std_msgs::msg::UInt8MultiArray tx_buf;
         rclcpp::Publisher<std_msgs::msg::UInt8>::SharedPtr arm_request_pub;
-        std_msgs::msg::UInt8 arm_request;
+        std_msgs::msg::UInt8 arm_request_msg;
         rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr joint_state_pub;
         sensor_msgs::msg::JointState joint_state;
         rclcpp::Subscription<trajectory_msgs::msg::JointTrajectoryPoint>::SharedPtr jtp_sub;
