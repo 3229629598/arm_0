@@ -12,7 +12,7 @@ namespace data_process_ns
         tx_pub=this->create_publisher<std_msgs::msg::UInt8MultiArray>("/tx_data",10);
         joint_state_pub=this->create_publisher<sensor_msgs::msg::JointState>("/joint_states",10);
         arm_request_pub=this->create_publisher<std_msgs::msg::UInt8>("/arm_request",10);
-        jtp_sub=this->create_subscription<trajectory_msgs::msg::JointTrajectoryPoint>("/jtp_data", 10, std::bind(&Data_Process::jtp_callback, this, std::placeholders::_1),sub_opt);
+        jtp_sub=this->create_subscription<sensor_msgs::msg::JointState>("/jtp_data", 10, std::bind(&Data_Process::jtp_callback, this, std::placeholders::_1),sub_opt);
         
         joint_num=6;
         arm_request_msg.data=0xff;
@@ -48,11 +48,11 @@ namespace data_process_ns
         }
     }
 
-    void Data_Process::jtp_callback(const trajectory_msgs::msg::JointTrajectoryPoint::SharedPtr jtp_data)
+    void Data_Process::jtp_callback(const sensor_msgs::msg::JointState::SharedPtr jtp_data)
     {
         tx_bag tx_data;
         for(int i=0;i<joint_num;i++)
-            tx_data.joint_goal[i]=jtp_data->positions[i];
+            tx_data.joint_goal[i]=jtp_data->position[i];
         crc16::Append_CRC16_Check_Sum(reinterpret_cast<uint8_t *>(&tx_data),tx_len);
         tx_buf.data=toVector(tx_data);
         tx_pub->publish(tx_buf);
@@ -68,5 +68,5 @@ int main(int argc, char **argv)
     executor.add_node(node);
     executor.spin();
     rclcpp::shutdown();
-    return EXIT_SUCCESS;
+    return 0;
 }

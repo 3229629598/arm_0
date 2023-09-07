@@ -32,8 +32,8 @@ namespace data_process_ns
         std_msgs::msg::UInt8 arm_request_msg;
         rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr joint_state_pub;
         sensor_msgs::msg::JointState joint_state;
-        rclcpp::Subscription<trajectory_msgs::msg::JointTrajectoryPoint>::SharedPtr jtp_sub;
-        void jtp_callback(const trajectory_msgs::msg::JointTrajectoryPoint::SharedPtr jtp_data);
+        rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr jtp_sub;
+        void jtp_callback(const sensor_msgs::msg::JointState::SharedPtr jtp_data);
         uint8_t joint_num;
     };
 }

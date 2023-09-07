@@ -1,7 +1,7 @@
 import os
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription,DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch.conditions import IfCondition,UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -25,23 +25,18 @@ data_process_launch=IncludeLaunchDescription(
     )
 )
 
-move_group_launch=IncludeLaunchDescription(
+config_launch=IncludeLaunchDescription(
     PythonLaunchDescriptionSource(
-    	os.path.join(get_package_share_directory("arm_0_moveit_config"),"launch","move_group.launch.py")
-    )
-)
-
-rsp_launch=IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(
-    	os.path.join(get_package_share_directory("arm_0_moveit_config"),"launch","rsp.launch.py")
-    )
-)
-
-moveit_rviz=IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(
-    	os.path.join(get_package_share_directory("arm_0_moveit_config"),"launch","moveit_rviz.launch.py")
+    	os.path.join(get_package_share_directory("bringup"),"launch","config.launch.py")
     ),
-    condition=IfCondition(use_rviz)
+    launch_arguments={'fake_test': fake_test,
+                      'use_rviz' : use_rviz}.items()
+)
+
+moveit_action_launch=IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(
+    	os.path.join(get_package_share_directory("moveit_action"),"launch","moveit_action.launch.py")
+    )
 )
 
 moveit_ctrl_launch=IncludeLaunchDescription(
@@ -50,12 +45,20 @@ moveit_ctrl_launch=IncludeLaunchDescription(
     )
 )
 
+static_tf_node = Node(
+    package="tf2_ros",
+    executable="static_transform_publisher",
+    name="static_transform_publisher",
+    output="log",
+    arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "base_link"],
+)
+
 ld.add_action(serial_py_launch)
 ld.add_action(data_process_launch)
-ld.add_action(move_group_launch)
-ld.add_action(rsp_launch)
-ld.add_action(moveit_rviz)
+ld.add_action(config_launch)
+ld.add_action(moveit_action_launch)
 ld.add_action(moveit_ctrl_launch)
+ld.add_action(static_tf_node)
 
 def generate_launch_description():
     return ld

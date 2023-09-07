@@ -8,8 +8,9 @@
             "includePath": [
                 "/opt/ros/humble/include/**",
                 "/usr/include/**",
-                "${workspaceFolder}/src/data_process/include/**",
-                "${workspaceFolder}/src/moveit_ctrl/include"
+                "${workspaceFolder}/src/data_process/include",
+                "${workspaceFolder}/src/moveit_ctrl/include",
+                "${workspaceFolder}/src/moveit_action/include"
             ],
             "name": "ROS",
             "intelliSenseMode": "gcc-x64",
