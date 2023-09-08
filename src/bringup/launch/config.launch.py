@@ -1,12 +1,13 @@
+import os
 from moveit_configs_utils import MoveItConfigsBuilder
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition,UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from moveit_configs_utils.launch_utils import DeclareBooleanLaunchArg
-
+from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     ld = LaunchDescription()
@@ -63,7 +64,7 @@ def generate_launch_description():
                 moveit_config.robot_description,
                 str(moveit_config.package_path / "config/ros2_controllers.yaml"),
             ],
-            condition=IfCondition(fake_test)
+            #condition=IfCondition(fake_test),
         )
     )
 
@@ -72,7 +73,20 @@ def generate_launch_description():
             PythonLaunchDescriptionSource(
                 str(moveit_config.package_path / "launch/spawn_controllers.launch.py")
             ),
-            condition=IfCondition(fake_test)
+            condition=IfCondition(fake_test),
+        )
+    )
+
+    ld.add_action(
+        Node(
+            package="controller_manager",
+            executable="spawner",
+            arguments=[
+                "arm_controller",
+                "-c",
+                "/controller_manager",
+            ],
+            condition=UnlessCondition(fake_test),
         )
     )
 
