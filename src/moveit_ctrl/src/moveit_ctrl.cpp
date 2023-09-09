@@ -15,8 +15,8 @@ namespace moveit_ctrl_ns
         pose_sub=this->create_subscription<geometry_msgs::msg::PoseStamped>("/target_pose",10,std::bind(&Moveit_Ctrl::pose_callback, this, std::placeholders::_1));
 
         joint_goal.push_back({0.0,0.0,0.0,0.0,0.0,0.0});
-        joint_goal.push_back({10.0,20.0,0.0,0.0,0.0,0.0});
-        joint_goal.push_back({20.0,50.0,0.0,1.5708,0.0,1.5708});
+        joint_goal.push_back({0.1,0.2,0.0,0.0,0.0,0.0});
+        joint_goal.push_back({0.2,0.5,0.0,1.5708,0.0,1.5708});
         joint_goal_num=joint_goal.size();
     }
 
@@ -52,5 +52,3 @@ int main(int argc, char **argv)
     rclcpp::shutdown();
     return 0;
 }
-
-//ros2 topic pub -1 /arm_request std_msgs/msg/UInt8 'data: "0"'

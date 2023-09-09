@@ -36,10 +36,16 @@ namespace moveit_action_ns
     void Moveit_Action_Node::execute(const std::shared_ptr<GoalHandleFollowJointTrajectory> goal_handle)
     {
         (void)goal_handle;
+        auto result = std::make_shared<FollowJointTrajectory::Result>();
         auto point_num=jt_data.points.size();
         int64_t last_time_ns=jt_data.points[0].time_from_start.sec*1e9+jt_data.points[0].time_from_start.nanosec;
         for(int i=1;i<point_num;i++)
         {
+            if(goal_handle->is_canceling())
+            {
+                goal_handle->canceled(result);
+                return;
+            }
             js_data.header.stamp=this->now();
             js_data.position.assign(jt_data.points[i].positions.begin(),jt_data.points[i].positions.end());
             jtp_pub->publish(js_data);
@@ -47,6 +53,7 @@ namespace moveit_action_ns
             rclcpp::sleep_for(std::chrono::nanoseconds(this_time_ns-last_time_ns));
             last_time_ns=this_time_ns;
         }
+        goal_handle->succeed(result);
     }
 
     void Moveit_Action_Node::handle_accepted(const std::shared_ptr<GoalHandleFollowJointTrajectory> goal_handle)
