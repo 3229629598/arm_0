@@ -39,6 +39,8 @@ namespace moveit_action_ns
         auto result = std::make_shared<FollowJointTrajectory::Result>();
         auto point_num=jt_data.points.size();
         int64_t last_time_ns=jt_data.points[0].time_from_start.sec*1e9+jt_data.points[0].time_from_start.nanosec;
+        uint16_t ctrl_frequence=200;
+
         for(int i=1;i<point_num;i++)
         {
             if(goal_handle->is_canceling())
@@ -46,11 +48,21 @@ namespace moveit_action_ns
                 goal_handle->canceled(result);
                 return;
             }
-            js_data.header.stamp=this->now();
-            js_data.position.assign(jt_data.points[i].positions.begin(),jt_data.points[i].positions.end());
-            jtp_pub->publish(js_data);
+
             int64_t this_time_ns=jt_data.points[i].time_from_start.sec*1e9+jt_data.points[i].time_from_start.nanosec;
-            rclcpp::sleep_for(std::chrono::nanoseconds(this_time_ns-last_time_ns));
+            uint64_t point_sum=(this_time_ns-last_time_ns)*ctrl_frequence/1e9;
+            int64_t sleep_time_ns=1e9/ctrl_frequence;
+
+            js_data.position.assign(jt_data.points[i-1].positions.begin(),jt_data.points[i-1].positions.end());
+            for(int j=0;j<point_sum;j++)
+            {
+                for(int k=0;k<jt_data.points[i].positions.size();k++)
+                    js_data.position[k]+=(jt_data.points[i].positions[k]-jt_data.points[i-1].positions[k])/point_sum;
+                js_data.header.stamp=this->now();
+                jtp_pub->publish(js_data);
+                rclcpp::sleep_for(std::chrono::nanoseconds(sleep_time_ns));
+            }
+            
             last_time_ns=this_time_ns;
         }
         goal_handle->succeed(result);
