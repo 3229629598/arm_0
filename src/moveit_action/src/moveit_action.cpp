@@ -41,6 +41,12 @@ namespace moveit_action_ns
         int64_t last_time_ns=jt_data.points[0].time_from_start.sec*1e9+jt_data.points[0].time_from_start.nanosec;
         uint16_t ctrl_frequence=200;
 
+        js_data.position.assign(jt_data.points[0].positions.begin(),jt_data.points[0].positions.end());
+        js_data.header.frame_id="begin";
+        js_data.header.stamp=this->now();
+        jtp_pub->publish(js_data);
+
+        js_data.header.frame_id="running";
         for(int i=1;i<point_num;i++)
         {
             if(goal_handle->is_canceling())
@@ -65,6 +71,12 @@ namespace moveit_action_ns
             
             last_time_ns=this_time_ns;
         }
+
+        js_data.position.assign(jt_data.points[point_num-1].positions.begin(),jt_data.points[point_num-1].positions.end());
+        js_data.header.frame_id="finish";
+        js_data.header.stamp=this->now();
+        jtp_pub->publish(js_data);
+
         goal_handle->succeed(result);
     }
 

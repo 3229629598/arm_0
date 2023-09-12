@@ -22,11 +22,15 @@ struct tx_bag
 {
   uint8_t header = 0xA5;
   float joint_goal[6];
+  uint8_t flag;
   uint16_t checksum;
 } __attribute__((packed));
 
 #define tx_len sizeof(tx_bag)
 #define rx_len sizeof(rx_bag)
+
+#define begin_flag 1
+#define finish_flag 2
 
 inline rx_bag fromVector(const std::vector<uint8_t> & data)
 {

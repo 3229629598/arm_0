@@ -53,6 +53,18 @@ namespace data_process_ns
         tx_bag tx_data;
         for(int i=0;i<joint_num;i++)
             tx_data.joint_goal[i]=jtp_data->position[i];
+        if(jtp_data->header.frame_id=="begin")
+        {
+            tx_data.flag=begin_flag;
+        }
+        else if(jtp_data->header.frame_id=="finish")
+        {
+            tx_data.flag=finish_flag;
+        }
+        else
+        {
+            tx_data.flag=0;
+        }
         crc16::Append_CRC16_Check_Sum(reinterpret_cast<uint8_t *>(&tx_data),tx_len);
         tx_buf.data=toVector(tx_data);
         tx_pub->publish(tx_buf);

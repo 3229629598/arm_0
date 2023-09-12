@@ -1,4 +1,4 @@
-port_name: str = "/dev/ttyACM_0"
+port_name: str = "/dev/ttyACM_c"
 port_baudrate = 115200
 port_bytesize = 8
 port_stopbits = 1
