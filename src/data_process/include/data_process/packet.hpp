@@ -29,9 +29,6 @@ struct tx_bag
 #define tx_len sizeof(tx_bag)
 #define rx_len sizeof(rx_bag)
 
-#define begin_flag 1
-#define finish_flag 2
-
 inline rx_bag fromVector(const std::vector<uint8_t> & data)
 {
   rx_bag packet;

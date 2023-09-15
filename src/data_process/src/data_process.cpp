@@ -28,6 +28,8 @@ namespace data_process_ns
 
     void Data_Process::process_callback(const std_msgs::msg::UInt8MultiArray::SharedPtr rx_buf)
     {
+        if(rx_buf->data.size()!=rx_len)
+            return;
         rx_bag rx_data;
         std::copy(rx_buf->data.begin(), rx_buf->data.end(), reinterpret_cast<uint8_t *>(&rx_data));
         if(crc16::Verify_CRC16_Check_Sum(reinterpret_cast<const uint8_t *>(&rx_data),rx_len))
@@ -55,11 +57,7 @@ namespace data_process_ns
             tx_data.joint_goal[i]=jtp_data->position[i];
         if(jtp_data->header.frame_id=="begin")
         {
-            tx_data.flag=begin_flag;
-        }
-        else if(jtp_data->header.frame_id=="finish")
-        {
-            tx_data.flag=finish_flag;
+            tx_data.flag=1;
         }
         else
         {

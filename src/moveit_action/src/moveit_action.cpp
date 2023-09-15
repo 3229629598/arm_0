@@ -40,11 +40,13 @@ namespace moveit_action_ns
         auto point_num=jt_data.points.size();
         int64_t last_time_ns=jt_data.points[0].time_from_start.sec*1e9+jt_data.points[0].time_from_start.nanosec;
         uint16_t ctrl_frequence=200;
+        int64_t sleep_time_ns=1e9/ctrl_frequence;
 
         js_data.position.assign(jt_data.points[0].positions.begin(),jt_data.points[0].positions.end());
         js_data.header.frame_id="begin";
         js_data.header.stamp=this->now();
         jtp_pub->publish(js_data);
+        rclcpp::sleep_for(std::chrono::nanoseconds(sleep_time_ns));
 
         js_data.header.frame_id="running";
         for(int i=1;i<point_num;i++)
@@ -57,7 +59,6 @@ namespace moveit_action_ns
 
             int64_t this_time_ns=jt_data.points[i].time_from_start.sec*1e9+jt_data.points[i].time_from_start.nanosec;
             uint64_t point_sum=(this_time_ns-last_time_ns)*ctrl_frequence/1e9;
-            int64_t sleep_time_ns=1e9/ctrl_frequence;
 
             js_data.position.assign(jt_data.points[i-1].positions.begin(),jt_data.points[i-1].positions.end());
             for(int j=0;j<point_sum;j++)
@@ -71,12 +72,6 @@ namespace moveit_action_ns
             
             last_time_ns=this_time_ns;
         }
-
-        js_data.position.assign(jt_data.points[point_num-1].positions.begin(),jt_data.points[point_num-1].positions.end());
-        js_data.header.frame_id="finish";
-        js_data.header.stamp=this->now();
-        jtp_pub->publish(js_data);
-
         goal_handle->succeed(result);
     }
 

@@ -8,8 +8,9 @@ namespace moveit_ctrl_ns
     {
         RCLCPP_INFO(get_logger(),"Moveit_ctrl_node is running.");
 
-        this->move_group.setMaxAccelerationScalingFactor(1.0);
-        this->move_group.setMaxVelocityScalingFactor(1.0);
+        this->move_group.setMaxAccelerationScalingFactor(1);
+        this->move_group.setMaxVelocityScalingFactor(1);
+        this->move_group.setGoalJointTolerance(0.001);
 
         request_sub=this->create_subscription<std_msgs::msg::UInt8>("/arm_request",10,std::bind(&Moveit_Ctrl::request_callback, this, std::placeholders::_1));
         pose_sub=this->create_subscription<geometry_msgs::msg::PoseStamped>("/target_pose",10,std::bind(&Moveit_Ctrl::pose_callback, this, std::placeholders::_1));
