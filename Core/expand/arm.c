@@ -5,7 +5,7 @@ motor_response_msg_t* motor_ptr_a;
 
 uint8_t use_moveit=1;
 uint8_t use_custom_ctrl=0;
-uint8_t use_remote_ctrl=0;
+uint8_t use_key_ctrl=1;
 
 uint8_t trajectory_begin;
 uint16_t tx_cnt;
@@ -39,6 +39,7 @@ joint joint_init(uint8_t joint_type,float min_pos,float max_pos,float r,int16_t 
 	
 	joint_str.min_pos=min_pos;
 	joint_str.max_pos=max_pos;
+	joint_str.pos_range=max_pos-min_pos;
 	joint_str.r=r;
 	
 	joint_str.use_reset=1;
@@ -125,10 +126,14 @@ void arm_loop(rc_ctrl_t* rc_data)
 		tx_cnt%=tx_psc;
 	}
 	
-	if(use_remote_ctrl)
+	if(use_key_ctrl)
 	{
-		if(0)
+		if(HAL_GPIO_ReadPin(KEY_GPIO_Port,KEY_Pin))
+		{
 			trajectory_begin=0;
+			joint_str[0].state.goal_pos+=joint_str[0].pos_range/3/tim3_f;
+			LIMIT_MIN_MAX(joint_str[0].state.goal_pos,joint_str[0].min_pos,joint_str[0].max_pos);
+		}
 	}
 
 	for(int i=0;i<joint_num;i++)

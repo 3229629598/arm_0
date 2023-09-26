@@ -29,8 +29,7 @@ typedef struct
 	
 	float min_pos;
 	float max_pos;
-	float min_val;
-	float max_val;
+	float pos_range;
 	float r;
 
 	uint8_t boot_flag;

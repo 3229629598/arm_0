@@ -168,12 +168,7 @@
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>tx_data,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>rx_data,0x0A</ItemText>
+          <ItemText>aaa,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
