@@ -138,7 +138,7 @@ void arm_loop(rc_ctrl_t* rc_data)
 
 	for(int i=0;i<joint_num;i++)
 	{
-		if(joint_str[i].state.cur_current>(joint_str[i].pid[1].out_max*0.8f) && joint_str[i].state.cur_rpm==0)
+		if(joint_str[i].state.cur_current>(joint_str[i].pid[1].out_max*0.9f) && abs(joint_str[i].state.cur_rpm)<10)
 		{
 			joint_str[i].state.stuck_check=1;
 			joint_str[i].state.goal_pos=joint_str[i].state.cur_pos;
