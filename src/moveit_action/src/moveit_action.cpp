@@ -13,7 +13,7 @@ namespace moveit_action_ns
         );
         jtp_pub=this->create_publisher<sensor_msgs::msg::JointState>("/jtp_data",10);
         js_data.name.insert(js_data.name.begin(), {"joint1", "joint2", "joint3", "joint4", "joint5", "joint6"});
-    };
+    }
 
     Moveit_Action_Node::~Moveit_Action_Node()
     {}
