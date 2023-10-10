@@ -10,7 +10,12 @@
                 "/usr/include/**",
                 "${workspaceFolder}/src/data_process/include",
                 "${workspaceFolder}/src/moveit_ctrl/include",
-                "${workspaceFolder}/src/moveit_action/include"
+                "${workspaceFolder}/src/moveit_action/include",
+                "${workspaceFolder}/install/moveit_task_constructor_core/include",
+                "${workspaceFolder}/build/moveit_task_constructor_msgs/rosidl_generator_cpp",
+                "${workspaceFolder}/src/pick_task/include",
+                "${workspaceFolder}/src/moveit_task_constructor/demo/include",
+                "${workspaceFolder}/build/moveit_task_constructor_demo/pick_place_demo_parameters/include"
             ],
             "name": "ROS",
             "intelliSenseMode": "gcc-x64",

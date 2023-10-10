@@ -53,8 +53,8 @@ static_tf_node = Node(
     arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "base_link"],
 )
 
-ld.add_action(serial_py_launch)
-ld.add_action(data_process_launch)
+#ld.add_action(serial_py_launch)
+#ld.add_action(data_process_launch)
 ld.add_action(config_launch)
 ld.add_action(moveit_action_launch)
 ld.add_action(moveit_ctrl_launch)

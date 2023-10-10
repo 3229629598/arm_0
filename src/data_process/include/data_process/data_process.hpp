@@ -34,7 +34,6 @@ namespace data_process_ns
         sensor_msgs::msg::JointState joint_state;
         rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr jtp_sub;
         void jtp_callback(const sensor_msgs::msg::JointState::SharedPtr jtp_data);
-        uint8_t joint_num;
     };
 }
 

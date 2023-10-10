@@ -36,7 +36,13 @@ namespace moveit_ctrl_ns
         std::vector<geometry_msgs::msg::Pose> pose_goal;
 
         moveit::planning_interface::MoveGroupInterface move_group;
-        moveit::planning_interface::PlanningSceneInterface planning_scene;       
+        moveit::planning_interface::PlanningSceneInterface planning_scene;
+
+        moveit_msgs::msg::CollisionObject collision_object,object_to_attach;
+        shape_msgs::msg::SolidPrimitive primitive;
+        geometry_msgs::msg::Pose ball1_pose,ball2_pose;
+        std::vector<moveit_msgs::msg::CollisionObject> collision_objects;
+        std::vector<std::string> touch_links;
     };
 }
 

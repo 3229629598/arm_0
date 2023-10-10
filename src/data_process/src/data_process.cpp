@@ -1,5 +1,7 @@
 #include <data_process/data_process.hpp>
 
+#define joint_num 7
+
 namespace data_process_ns
 {
     Data_Process::Data_Process(const rclcpp::NodeOptions & options):Node("data_process_node",options)
@@ -14,13 +16,12 @@ namespace data_process_ns
         arm_request_pub=this->create_publisher<std_msgs::msg::UInt8>("/arm_request",10);
         jtp_sub=this->create_subscription<sensor_msgs::msg::JointState>("/jtp_data", 10, std::bind(&Data_Process::jtp_callback, this, std::placeholders::_1),sub_opt);
         
-        joint_num=6;
         arm_request_msg.data=0xff;
         joint_state.position.resize(joint_num);
         joint_state.velocity.resize(joint_num);
         joint_state.effort.resize(joint_num);
         joint_state.header.frame_id = "base_link";
-        joint_state.name.insert(joint_state.name.begin(), {"joint1", "joint2", "joint3", "joint4", "joint5", "joint6"});
+        joint_state.name.insert(joint_state.name.begin(), {"joint1", "joint2", "joint3", "joint4", "joint5", "joint6","joint7"});
     }
 
     Data_Process::~Data_Process()

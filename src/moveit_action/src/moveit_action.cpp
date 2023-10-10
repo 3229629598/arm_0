@@ -12,7 +12,7 @@ namespace moveit_action_ns
         std::bind(&Moveit_Action_Node::handle_accepted, this, _1)
         );
         jtp_pub=this->create_publisher<sensor_msgs::msg::JointState>("/jtp_data",10);
-        js_data.name.insert(js_data.name.begin(), {"joint1", "joint2", "joint3", "joint4", "joint5", "joint6"});
+        js_data.name.insert(js_data.name.begin(), {"joint1", "joint2", "joint3", "joint4", "joint5", "joint6","joint7"});
     }
 
     Moveit_Action_Node::~Moveit_Action_Node()
@@ -39,7 +39,7 @@ namespace moveit_action_ns
         auto result = std::make_shared<FollowJointTrajectory::Result>();
         auto point_num=jt_data.points.size();
         int64_t last_time_ns=jt_data.points[0].time_from_start.sec*1e9+jt_data.points[0].time_from_start.nanosec;
-        uint16_t ctrl_frequence=200;
+        uint16_t ctrl_frequence=20;
         int64_t sleep_time_ns=1e9/ctrl_frequence;
 
         js_data.position.assign(jt_data.points[0].positions.begin(),jt_data.points[0].positions.end());
@@ -69,9 +69,10 @@ namespace moveit_action_ns
                 jtp_pub->publish(js_data);
                 rclcpp::sleep_for(std::chrono::nanoseconds(sleep_time_ns));
             }
-            
             last_time_ns=this_time_ns;
         }
+        js_data.header.frame_id="final";
+        jtp_pub->publish(js_data);
         goal_handle->succeed(result);
     }
 

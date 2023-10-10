@@ -25,7 +25,7 @@ ament_auto_add_executable(
 )
 
 ament_auto_add_executable(
-  fake_js_pub_node src/fake_js_pub.cpp
+  fake_joint_pub_node src/fake_joint_pub.cpp
 )
  
 ament_auto_add_library (${PROJECT_NAME} SHARED  #制作动态链接库，将可执行文件和自定义的库文件链接

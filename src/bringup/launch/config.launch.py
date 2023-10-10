@@ -14,7 +14,7 @@ def generate_launch_description():
     use_rviz=LaunchConfiguration('use_rviz', default='true')
     fake_test=LaunchConfiguration('fake_test', default='false')
 
-    moveit_config = MoveItConfigsBuilder("arm_0", package_name="arm_0_moveit_config").to_moveit_configs()
+    moveit_config = MoveItConfigsBuilder("engineer2023", package_name="engineer2023_moveit_config").to_moveit_configs()
     
     ld.add_action(
         DeclareBooleanLaunchArg(

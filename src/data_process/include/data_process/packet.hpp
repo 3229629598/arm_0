@@ -13,7 +13,7 @@ namespace data_process_ns
 struct rx_bag
 {
   uint8_t header = 0x5A;
-  float joint_position[6];
+  float joint_position[7];
   uint8_t arm_request;
   uint16_t checksum;
 } __attribute__((packed));
@@ -21,7 +21,7 @@ struct rx_bag
 struct tx_bag
 {
   uint8_t header = 0xA5;
-  float joint_goal[6];
+  float joint_goal[7];
   uint8_t flag;
   uint16_t checksum;
 } __attribute__((packed));

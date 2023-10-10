@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="engineer2023">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import engineer2023 urdf file -->
+    <xacro:include filename="$(find description)/urdf/description.urdf" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="engineer2023.ros2_control.xacro" />
+
+
+    <xacro:engineer2023_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
+
+</robot>
