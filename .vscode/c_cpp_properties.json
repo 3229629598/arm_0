@@ -10,7 +10,8 @@
                 "/usr/include/**",
                 "${workspaceFolder}/src/data_process/include",
                 "${workspaceFolder}/src/moveit_ctrl/include",
-                "${workspaceFolder}/src/moveit_action/include"
+                "${workspaceFolder}/src/moveit_action/include",
+                "${workspaceFolder}/src/serial_cpp/include"
             ],
             "name": "ROS",
             "intelliSenseMode": "gcc-x64",
